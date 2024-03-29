@@ -8,10 +8,10 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
-import {AngularFireAuthModule} from '@angular/fire/compat/auth'
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getAuth, provideAuth } from '@angular/fire/auth';
+// import {AngularFireAuthModule} from '@angular/fire/compat/auth'
+// import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+// import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+// import { getAuth, provideAuth } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
 
 
@@ -31,10 +31,10 @@ import { FormsModule } from '@angular/forms';
 
 
     //firebase related imports
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore()),
-    AngularFireAuthModule,
-    provideAuth(() => getAuth()),
+    // provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    // provideFirestore(() => getFirestore()),
+    // AngularFireAuthModule,
+    // provideAuth(() => getAuth()),
 
   ],
   providers: [HttpClient],

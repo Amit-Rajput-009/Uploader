@@ -1,5 +1,9 @@
-<app-sidebar>
-</app-sidebar>
+<!-- <app-sidebar></app-sidebar> -->
+<input type="file" (change)="onFileChange($event)">
+<button (click)="downloadFile()">Click here! to Download</button>
+<br>
+<iframe src="http://localhost:3000/api/documents/localstorage/download/1711093746005-downloaded_file.pdf" frameborder="0" style="height: 1000px; width: 100%;"></iframe>
+<button id="download-button">Download File</button>
 <router-outlet></router-outlet>
 
 <!-- <app-login></app-login> -->

@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { Firestore,collection,addDoc, collectionData  } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,9 +12,9 @@ export class LoginComponent  {
  
   MSG = '';
   router = inject(Router)
-  constructor(public authService: AuthService,private fireStore: Firestore) {
+  constructor(public authService: AuthService) {
     // this.authService.greet().subscribe((str:string)=>this.MSG=str);
-    this.getData();
+   
   }
 
   ngOnInit() {
@@ -28,10 +27,6 @@ export class LoginComponent  {
   password: string = '';
   role: string = 'admin';
 
-  getData(){
-    const collectionInstance = collection(this.fireStore,'users');
-    collectionData (collectionInstance).subscribe(value => console.log(value)) 
-  }
 
   onSubmit(myForm:any) {
     
@@ -39,6 +34,6 @@ export class LoginComponent  {
     // const collectionInstance = collection(this.fireStore,"users");
     // addDoc(collectionInstance,myForm.value).then(()=>{console.log("Data has been saved")}).catch((error:Error)=>{console.log(error)})
 
-    this.authService.register("amitsinh.rajput@msbcgroup.com","abc@123","Amitsinh Rajput","Admin").subscribe(()=>{this.router.navigateByUrl('/')})
+    // this.authService.register("amitsinh.rajput@msbcgroup.com","abc@123","Amitsinh Rajput","Admin").subscribe(()=>{this.router.navigateByUrl('/')})
   }
 }

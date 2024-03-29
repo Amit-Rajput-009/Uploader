@@ -5,6 +5,8 @@
 /tmp
 /out-tsc
 /bazel-out
+uploads
+Backend/.env
 
 # Node
 /node_modules
