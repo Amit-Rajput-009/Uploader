@@ -1,0 +1,40 @@
+<div class="min-w-full py-2">
+  <ul class="list-none min-w-full">
+    <li *ngFor="let node of docs" class="pl-2 mb-1 min-w-full rounded-md">
+      <div class="flex hover:bg-slate-200 hover:rounded-md min-w-full">
+        <div *ngIf="node.isFolder"
+          [ngClass]="{
+            'bg-slate-300 rounded-md hover:bg-slate-300 text-[15px]':(currentID$ | async) === node._id
+          }"
+        
+          (click)="selectListItem(node._id)" 
+          class="hover:bg-slate-200 overflow-hidden hover:rounded-md active:bg-slate-200 flex w-full p-2">
+          <img *ngIf="node.isFolder" 
+            (click)="toggleNode(node)"
+            src="/assets/icons/files/Folder.svg"
+            class="cursor-pointer mr-2 text-blue-500 h-6 w-6"
+          />
+          <span *ngIf="node.isFolder" class="font-bold">{{ node.name }}</span>
+        </div>
+        <div *ngIf="!node.isFolder"  [ngClass]="{
+          'bg-slate-300 rounded-md hover:bg-slate-300 text-[15px]':(currentID$ | async) === node._id
+        }"
+        (click)="selectListItem(node._id,node.parent)" 
+        class="hover:bg-slate-200 overflow-hidden hover:rounded-md active:bg-slate-200 flex w-full p-2">
+          <img *ngIf="!node.isFolder" src="/assets/icons/files/file.svg" class="text-gray-400 mr-2 w-5"/>
+          <a *ngIf="!node.isFolder" 
+            (click)="downloadAndOpenFile(node.url)"
+            class="text-blue-500 font-bold hover:underline"
+          >{{ node.name }}</a>
+          <span class="ml-2 text-gray-400" *ngIf="node.fileType">({{ node.fileType }})</span>
+        </div>
+      </div>
+      <ul *ngIf="node.isFolder && node.isExpanded" class="pl-5">
+        <app-tree-view *ngIf="node.children.length !== 0" 
+          (selectedDoc)="selectListItem($event)" 
+          [docs]="node.children">
+        </app-tree-view>
+      </ul>
+    </li>
+  </ul>
+</div>

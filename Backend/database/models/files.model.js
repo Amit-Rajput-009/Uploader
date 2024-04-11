@@ -22,10 +22,7 @@ const nodeSchema = new mongoose.Schema({
   },
   creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   children: {
-    type: [{
-      name: { type: String, required: true }, // Name of the child node
-      _id: { type: mongoose.Schema.Types.ObjectId, ref: "Node" } // Child node's ObjectId
-    }],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Node" }],
     default: [],
     required: function () {
       return this.isFolder;

@@ -1,1 +1,36 @@
-<p>signup works!</p>
+<div class="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-200 via-gray-400 to-gray-100">
+    <div class="w-full max-w-md p-8 bg-white bg-opacity-90 shadow-lg rounded-lg">
+        <h2 class="text-4xl font-bold text-center text-gray-900 mb-6">Welcome {{name}}!</h2>
+        <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="space-y-6">
+            <div>
+                <label for="adminEmail" class="block text-gray-700 text-sm font-semibold mb-2">Admin Address</label>
+                <input ngModel name="adminEmail" type="email" autocomplete="none" id="adminEmail" class="w-full bg-gray-100 border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-purple-500" placeholder="Enter Admin email">
+            </div>
+            <div>
+                <label for="userEmail" class="block text-gray-700 text-sm font-semibold mb-2">User Address</label>
+                <input ngModel name="userEmail" type="email" autocomplete="none" id="userEmail" class="w-full bg-gray-100 border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-purple-500" placeholder="Enter User email">
+            </div>
+            <div>
+                <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+                <input ngModel name="password" type="password" id="password" class="w-full bg-gray-100 border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-purple-500" placeholder="Create user password">
+            </div>
+            <div>
+                <label for="role" class="block text-gray-700 text-sm font-semibold mb-2">User Role</label>
+                <div class="relative">
+                    <select id="role" name="role" ngModel class="appearance-none w-full bg-gray-100 border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-purple-500">
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="w-full bg-purple-500 text-white px-8 py-3 rounded-md hover:bg-purple-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-white">Create User</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,5 +1,4 @@
 const User = require('./database/models/user.model');
-const Node = require('./database/models/files.model');
 const express = require('express');
 require('dotenv').config();
 const bcrypt = require('bcrypt');
@@ -11,6 +10,8 @@ const port = process.env.PORT || 5000;
 const {verifyToken} = require('./middleware/middleware');
 const connectToDb = require('./database/db');
 const FileUploader = require('./controller/uploads');
+const StorageHandler = require('./controller/StorageHandler');
+const UserHandler = require('./controller/UserHandler');
 
 //Database Connection
   connectToDb();
@@ -24,7 +25,7 @@ app.use(bodyParser.json());
 //Authentication End points
 
 app.post('/login',async (req,res)=>{
-   const email= req.body.email;
+   let email= req.body.email;
    let password = req.body.password;
 
 
@@ -40,9 +41,7 @@ app.post('/login',async (req,res)=>{
         res.status(401).send({auth:false, msg:'Invalid Email or Password'});
       }else{
           const token = createToken(user); 
-          const logedUser =  {user,token : token} ;
-          
-          res.header("logedUser", logedUser).send(logedUser);
+          res.status(200).json({"userId":user._id ,'role':user.role , "token":token});
       }
     }
     else{
@@ -53,68 +52,61 @@ app.post('/login',async (req,res)=>{
 
 });
 
-app.post('/register',(req,res)=>{
+app.post('/register',verifyToken, async (req,res)=> {
 
-  let email = req.body.email;
+  let email = req.body.userEmail
   let password = req.body.password;
-  let role = req.body.role;
-  let adminMail = req.body.admin;
+  let rawPassword = password;
+  let role = req.body.role
+  let adminMail = await User.findById(req.user).select('email role');
 
-  User.findOne({email:adminMail}).then(async (admin)=>{
-    if(admin.role === 'admin')
+    if(adminMail.role === 'admin')
     {
-      const userExist = await User.findOne({email:email})
+      const userExist = await User.findOne({email:email}) 
       if(!userExist){
         password = await hashPassword(password);
      
            const newUser = new User({
-             email : email,
-             password : password.toString() ,
+             email : email.toLowerCase(),
+             password : password.toString(),
              role : role ? role : 'user',
          });
          newUser.save();
-         res.status(201).send(newUser._id);
+         res.status(201).json({ "userEmail" : newUser.email,"password" : rawPassword,"role":newUser.role, status:201});
          }
          else{
-          res.status(403).send(`${email} already exists! please try to login`);
+          res.status(403).json({"Message":`${email} already exists! please try to login`, status:403});
          }
     }
 
  else{
     res.status(403).send('You are not authorized to perform this action');
     }
-})
+
   });
 
+app.post('/verifyUser',verifyToken,(req,res)=>{
+    if(req.user){
+      res.send(true);
+    }
+    else{
+      res.send(false);
+    }
+})
 
   // Local storage End Points 
 
-app.get('/api/documents/localstorage',verifyToken,async (req,res)=>{
-  // const userId = req.params.userId;
-  const userId = req.user;
-  const userDocs =await Node.find({creator:userId})
- console.log(JSON.stringify(userDocs));
-  res.json(userDocs);
-})
 
-// app.post('/api/documents/localstorage/createDocument', verifyToken,upload.array('files',2), (req, res) => {
-//   let docName=req.body.docName?req.body.docName:'Untitled Document';
-//   let creator = req.body.userId?req.body.userId:req.user;
-//   let isFolder = req.body.isFolder?req.body.isFolder:false;
-//   console.log(req.file);
-//   res.send("Something happens?")
-  
-//   // Host file and save URL.
+//Handlers
 
-// });
 app.use('/api/documents/localstorage',FileUploader);
+app.use('/api/documents',StorageHandler)
+app.use('/user',UserHandler);
+
+
 // Utility Endpoints
-app.get('/greet', async (req, res) => {
-  
-// res.status(200).send("Hello");
-// await user.save()
-// res.status(200).send(JSON.stringify(user));
-});
+
+
 // 65f3eec33b87ca97ee4415fe
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWYzZWVjMzNiODdjYTk3ZWU0NDE1ZmUiLCJpYXQiOjE3MTA0ODkwNDUsImV4cCI6MTcxMTA5Mzg0NX0.pVwG2zX3icnifpnFsh6l3pycHHTYD4RgE5bPiP4EhvM
 
@@ -133,7 +125,7 @@ async function hashPassword(password) {
 }
 const createToken = (user)=>{
   let token=jwt.sign({_id:user._id},process.env.ACCESS_TOKEN_SECRET,{expiresIn:'7d'});
-  console.log("Your Token is: "+token);
+  // console.log(token);
 return token;
 }
 async function comparePasswords(password, hashedPassword) {

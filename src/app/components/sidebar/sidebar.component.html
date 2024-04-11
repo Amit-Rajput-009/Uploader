@@ -1,14 +1,35 @@
-<div class="fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white flex flex-col">
-    <div class="flex items-center justify-center py-4">
-      <span class="text-xl font-bold">Logo of Uploader</span>
-    </div>
-    <ul class="flex flex-col mt-4">
-      <li class="py-2 px-4 hover:bg-gray-700">
-        <a routerLink="/">Home</a>
+<div
+  class="top-0 left-0 h-screen w-full bg-gray-100 text-gray-800 flex flex-col justify-between  max-md:w-fit max-[500px]:hidden"
+>
+  <div class="flex items-center justify-center flex-col">
+    <span
+      class="text-3xl font-extrabold pt-10 pb-3 hover:cursor-pointer"
+      routerLink="/"
+    >
+      <img
+        src="/assets/images/logo.png"
+        alt="Logo"
+        class="w-3/4 mx-auto max-md:hidden"
+      />
+      <img
+        src="/assets/icons/logo.svg"
+        alt="Logo"
+        class="w-2/4 mx-auto hidden max-md:block max-md:w-[75px] h-[75px]"
+      />
+    </span>
+    <hr class="w-[85%] h-1 mt-4 mb-3" />
+    <ul class="mt-4 w-full">
+      <li
+        *ngFor="let link of Navlinks"
+        routerLink="{{ link.to }}"
+        [ngClass]="{ 'bg-slate-300': isLinkActive(link.to) }"
+        class="py-3 px-4 flex items-center gap-3 mx-3 rounded hover:cursor-pointer hover:bg-gray-200 transition-all max-md:w-fit"
+      >
+        <img src="{{ link.icon }}" alt="{{ link.label }}" class="h-6 w-6  max-md:h-8  max-md:w-10" />
+        <a [routerLink]="link.to" class="text-lg font-medium max-md:hidden">{{
+          link.label
+        }}</a>
       </li>
-      <li class="py-2 px-4 hover:bg-gray-700">
-        <a routerLink="/login">About</a>
-      </li>
-      </ul>
+    </ul>
   </div>
-  
+</div>

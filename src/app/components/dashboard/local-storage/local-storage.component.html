@@ -1,0 +1,73 @@
+
+<div  class="flex justify-center items-center w-full">
+
+  <div class="flex w-[80%] flex-col self-center">
+    <!-- <div class="w-full mt-4">
+      <p class="text-3xl">
+        Welcome to Your Work space!
+      </p>
+    </div> -->
+      <div class="flex justify-evenly w-full px-8 pt-16 pb-8 max-md:flex-col">
+          <input type="text" [(ngModel)]="searchQuery" name="searchQuery" id="Query" (input)="onSearch()" class="w-[60%] max-md:w-[100%] max-md:my-2 p-2 px-4 rounded-xl border border-gray-300 focus:outline-none" placeholder="Search...">
+         
+          <select name="category" id="category"  [(ngModel)]="selectedCategory" (change)="onSearch()"  class="w-1/4  max-md:w-[100%] max-md:my-2 p-2 rounded-full border border-gray-300 focus:outline-none">
+            <option value="" selected disabled hidden>Category</option>
+            <option *ngFor="let category of categories" [value]="category.value">{{ category.label }}</option>
+          </select>
+      </div>
+      <hr class="my-4 w-[97%] self-center border-t-2 border-gray-200">
+      <app-popup-model *ngIf="isModalVisible" [Operation]="this.operation" [FolderId]=" currentId$ | async " 
+      (appendChild)="appendChild($event)"  (removeChild)="removeNode($event)" (closePopUp) = "toggleModal()" ></app-popup-model>
+      <div class="my-4 w-full">
+        <section class="flex">
+          <img src="/assets/icons/files/upload-file.svg" (click)="performOperation('Upload')" alt="File" class="h-7">
+          <img src="/assets/icons/files/createFolder.svg" (click)="performOperation('Create')"  alt="File" class="h-9">
+          <img src="/assets/icons/download-file.svg" (click)="performOperation('Create')"  alt="File" class="h-9">
+          <img src="/assets/icons/files/deleteFolder.svg" (click)="performOperation('Delete')"  alt="File" class="h-9">
+          <!-- <img src="/assets/icons/files/createFolder.svg" alt="File" class="h-9"> -->
+        </section>
+      </div>
+      <mat-tab-group class="max-w-md p-8 bg-white rounded-lg shadow-md">
+        <mat-tab >
+          <ng-template  mat-tab-label>
+            <div (click)="ClearId()" class=" w-full flex justify-center items-center gap-2">
+              <img src="/assets/icons/harddisk.svg" class="h-8 w-8"/> 
+              <p class="font-bold text-lg pt-3 max-md:hidden">
+                Local storage
+              </p>
+            </div>
+          </ng-template>
+          <section #contentContainer class="mt-8 px-4 h-fit max-h-[500px] min-h-[300px] overflow-x-hidden shadow-inner rounded-md">
+            <app-tree-view  [docs] = "nodes" (selectedDoc) = "selectedFolder($event)" />
+          </section>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <div class="flex justify-center items-center gap-2">
+              <img src="/assets/icons/aws.svg" class="h-8 w-8"/> 
+              <p class="font-bold text-lg pt-3 max-md:hidden">
+                AWS
+              </p>
+            </div>
+          </ng-template>
+          <section class="mt-8 pl-4 h-fit max-h-[564px] min-h-[300px] overflow-x-hidden shadow-inner rounded-md">
+            <app-tree-view/>
+          </section>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <div class="flex justify-center items-center gap-2">
+              <img src="/assets/icons/azure.svg" class="h-8 w-8"/> 
+              <p class="font-bold text-lg pt-3 max-md:hidden">
+               AZURE
+              </p>
+            </div>
+          </ng-template>
+          <section class="mt-8 pl-4 h-fit max-h-[564px] min-h-[300px] overflow-x-hidden shadow-inner rounded-md">
+            <app-tree-view/>
+          </section>
+        </mat-tab>
+      </mat-tab-group>
+  </div>
+</div>
+  

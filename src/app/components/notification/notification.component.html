@@ -1,0 +1,21 @@
+<!-- notifications.component.html -->
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+        <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+            <h1 class="text-3xl font-semibold text-gray-800 mb-8">Notifications</h1>
+            <ul>
+                <li *ngFor="let notification of notifications" class="mb-4">
+                    <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-md shadow-md">
+                        <!-- {{ notification.message }} -->
+                       
+                        <button (click)="markAsRead(notification)" class="ml-4 bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300">
+                            Mark as Read
+                        </button>
+                    </div>
+                </li>
+                <li *ngIf="notifications.length === 0" class="text-gray-500">No new notifications.</li>
+            </ul>
+        </div>
+    </div>
+</div>
